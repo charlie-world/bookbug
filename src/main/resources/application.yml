@@ -1,0 +1,5 @@
+spring:
+  profiles: local
+
+  kakao-application:
+    rest-api-key: 6bf56b87f7e20d13991fbf1a63fcb51b
