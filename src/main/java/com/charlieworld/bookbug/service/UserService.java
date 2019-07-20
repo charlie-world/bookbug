@@ -23,6 +23,10 @@ public class UserService {
     private UserTokenRepository userTokenRepository;
 
     public Token join(String id, String password) throws CustomException {
+        Optional<User> userData = userRepository.findByRealId(id);
+        if (userData.isPresent()) {
+            throw new CustomException(HttpStatus.CONFLICT, "이미 가입된 회원 입니다.");
+        }
         AES256CryptoService aes256CryptoService = new AES256CryptoService();
         String encryptedPassword = aes256CryptoService.encryptB64(password);
         User user = User
