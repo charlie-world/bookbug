@@ -33,9 +33,17 @@ public class UserController {
         return response;
     }
 
-//    @PostMapping("/v1/users/login")
-//    public BaseResponse login(@RequestBody UserAuth userAuth) {
-//        // login(userAuth);
-//        return "some token";
-//    }
+    @PostMapping("/v1/users/login")
+    public BaseResponse login(@RequestBody UserAuth userAuth) {
+        Token token = null;
+        BaseResponse<Token> response = null;
+        try {
+            token = userService.login(userAuth.getId(), userAuth.getPassword());
+            response = new BaseResponse<Token>(token);
+        } catch (CustomException e) {
+            Meta meta = new Meta(e.getStatusCode(), e.getMessage());
+            response = new BaseResponse<Token>(meta);
+        }
+        return response;
+    }
 }
