@@ -2,6 +2,7 @@ package com.charlieworld.bookbug.entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -10,17 +11,17 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-public class User {
+@NoArgsConstructor
+public class UserToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userTokenId;
+
+    @Column(name = "user_id", unique = true)
     private Long userId;
 
-    @Column(name="real_id" , unique=true)
-    private String realId;
-
-    private String encryptedPassword;
-    private String encryptKey;
+    private String token;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -29,9 +30,8 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Builder
-    public User(String realId, String encryptedPassword, String encryptKey) {
-        this.realId = realId;
-        this.encryptedPassword = encryptedPassword;
-        this.encryptKey = encryptKey;
+    public UserToken(Long userId, String token) {
+        this.userId = userId;
+        this.token = token;
     }
 }
