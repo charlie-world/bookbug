@@ -13,22 +13,22 @@ import java.util.UUID;
 @Getter
 public class AES256CryptoService {
 
+    private String KEYSPEC_METHOD = "AES";
+    private int KEY_LENGTH = 16;
     private String METHOD = "AES/CBC/PKCS5Padding";
     private String CHARSET = "UTF-8";
 
     private String key;
-    private String iv;
+    private String iv = "0000000000000000";
     private SecretKeySpec keySpec;
 
     public AES256CryptoService() {
-        this.iv = "0000000000000000";
-        this.keySpec = new SecretKeySpec(new byte[16], "AES");
+        this.keySpec = new SecretKeySpec(new byte[KEY_LENGTH], "AES");
     }
 
     public AES256CryptoService(String key) {
         this.key = key;
-        this.iv = "0000000000000000";
-        this.keySpec = new SecretKeySpec(new byte[16], "AES");
+        this.keySpec = new SecretKeySpec(new byte[KEY_LENGTH], "AES");
     }
 
     private String generateKey() {

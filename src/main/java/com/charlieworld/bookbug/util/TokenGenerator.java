@@ -5,10 +5,12 @@ import java.util.Base64;
 
 public class TokenGenerator {
 
+    private static int TOKEN_LENGTH = 16;
+
     public static String generateToken() {
         SecureRandom random = new SecureRandom();
         Base64.Encoder base64Encoder = Base64.getEncoder();
-        byte[] tokenBytes = new byte[16];
+        byte[] tokenBytes = new byte[TOKEN_LENGTH];
         random.nextBytes(tokenBytes);
         return base64Encoder.encodeToString(tokenBytes);
     }
