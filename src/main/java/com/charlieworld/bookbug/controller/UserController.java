@@ -5,6 +5,7 @@ import com.charlieworld.bookbug.dto.Meta;
 import com.charlieworld.bookbug.dto.Token;
 import com.charlieworld.bookbug.dto.UserHistory;
 import com.charlieworld.bookbug.exception.CustomException;
+import com.charlieworld.bookbug.service.HistoryService;
 import com.charlieworld.bookbug.service.UserService;
 import com.charlieworld.bookbug.vo.UserAuth;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private HistoryService historyService;
 
     @PostMapping("/v1/users/join")
     public BaseResponse join(@RequestBody UserAuth userAuth) {
@@ -54,7 +58,7 @@ public class UserController {
         BaseResponse<List<UserHistory>> response;
         try {
             Long userId = userService.authenticate(token);
-            response = new BaseResponse<>(userService.getUserHistory(userId));
+            response = new BaseResponse<>(historyService.getUserHistory(userId));
         } catch (CustomException e) {
             Meta meta = new Meta(e.getStatusCode(), e.getMessage());
             response = new BaseResponse<>(meta);

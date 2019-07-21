@@ -3,6 +3,7 @@ package com.charlieworld.bookbug.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(indexes = {@Index(name = "idx_count", columnList = "count")})
 public class Popular {
@@ -19,9 +21,8 @@ public class Popular {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long popularId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "queryId")
-    private Query query;
+    @Column(name = "queryString", unique = true)
+    private String queryString;
 
     private Long count;
 
@@ -32,9 +33,9 @@ public class Popular {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Popular(Long popularId, Query query, Long count) {
+    public Popular(Long popularId, String queryString, Long count) {
         this.popularId = popularId;
-        this.query = query;
+        this.queryString = queryString;
         this.count = count;
     }
 }

@@ -1,4 +1,4 @@
-package com.charlieworld.bookbug.http.model;
+package com.charlieworld.bookbug.http.model.kakao;
 
 import lombok.Data;
 
