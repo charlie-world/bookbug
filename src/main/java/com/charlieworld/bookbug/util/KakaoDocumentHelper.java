@@ -12,7 +12,7 @@ public class KakaoDocumentHelper {
                 .builder()
                 .name(document.getTitle())
                 .isbn(document.getIsbn())
-                .authors(ArrayMapper.arrayToString(document.getAuthors()))
+                .authors(ArrayHelper.arrayToString(document.getAuthors()))
                 .contents(document.getContents())
                 .publisher(document.getPublisher())
                 .publishDatetime(odt.toLocalDateTime())

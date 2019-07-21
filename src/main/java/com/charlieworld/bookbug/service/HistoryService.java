@@ -2,7 +2,6 @@ package com.charlieworld.bookbug.service;
 
 import com.charlieworld.bookbug.dto.UserHistory;
 import com.charlieworld.bookbug.entity.History;
-import com.charlieworld.bookbug.entity.Query;
 import com.charlieworld.bookbug.repository.HistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class HistoryService {
         for (History history : histories) {
             UserHistory userHistory = UserHistory
                     .builder()
-                    .keyword(history.getQuery().getQueryString())
+                    .keyword(history.getQueryString())
                     .historyDateTime(history.getCreatedAt())
                     .build();
             userHistories.add(userHistory);
@@ -30,7 +29,7 @@ public class HistoryService {
         return userHistories;
     }
 
-    public void insertHistory(Long userId, Query query) {
-        historyRepository.save(History.builder().query(query).userId(userId).build());
+    public void insertHistory(Long userId, String queryString) {
+        historyRepository.save(History.builder().queryString(queryString).userId(userId).build());
     }
 }

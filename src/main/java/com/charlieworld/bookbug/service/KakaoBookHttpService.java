@@ -31,11 +31,12 @@ public class KakaoBookHttpService {
         KakaoBookModel model = null;
         try {
             String encodedQuery = URLEncoder.encode(query, "UTF-8");
-            String params = String.format("?target=%s&page=%d&query=%s", targetType.getValue(), page, encodedQuery);
+            String params = String.format("?target=%s&page=%d&query=%s", targetType.getValue(), page, query);
             String uri = host + params;
             ResponseEntity<KakaoBookModel> response = restTemplate.exchange(uri, HttpMethod.GET, makeAuthHeader(), KakaoBookModel.class);
             model = response.getBody();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "서버와 통신 중 문제가 발생 하였습니다.");
         }
         return model;

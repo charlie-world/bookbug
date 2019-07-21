@@ -52,8 +52,8 @@ public class BookController {
         List<BookSimple> bookSimples = null;
         BaseResponse<List<BookSimple>> response = null;
         try {
-            Long userId = userService.authenticate(token);
-            bookSimples = bookService.searchBooks(userId, queryString, page, targetType);
+            //Long userId = userService.authenticate(token);
+            bookSimples = bookService.searchBooks(1L, queryString, page, targetType);
             response = new BaseResponse<>(bookSimples);
         } catch (CustomException e) {
             Meta meta = new Meta(e.getStatusCode(), e.getMessage());

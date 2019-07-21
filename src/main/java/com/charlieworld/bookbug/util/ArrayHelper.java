@@ -3,7 +3,7 @@ package com.charlieworld.bookbug.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ArrayMapper {
+public class ArrayHelper {
 
     private static String SEPERATOR = ",";
 
