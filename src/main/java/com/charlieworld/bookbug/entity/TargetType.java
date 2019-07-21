@@ -3,7 +3,7 @@ package com.charlieworld.bookbug.entity;
 import lombok.Getter;
 
 @Getter
-public enum Target {
+public enum TargetType {
     TITLE("title"),
     ISBN("isbn"),
     PUBLISHER("publisher"),
@@ -11,7 +11,7 @@ public enum Target {
 
     private String value;
 
-    Target(String value) {
+    TargetType(String value) {
         this.value = value;
     }
 }

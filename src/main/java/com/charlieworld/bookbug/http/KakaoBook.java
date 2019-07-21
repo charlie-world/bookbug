@@ -8,7 +8,7 @@ public class KakaoBook {
 //    @Autowired
 //    private QueryRepository queryRepository;
 //
-////    public KakaoBookModel getBooks(int page, String query, Target target) {
+////    public KakaoBookModel getBooks(int page, String query, TargetType target) {
 ////        Optional<Query> queryOpt = queryRepository.findByQueryStrNPageNTarget(query, page, target);
 ////        if (queryOpt.isPresent()) {
 ////

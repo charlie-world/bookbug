@@ -27,7 +27,7 @@ public class Query {
     private List<Book> books;
 
     @Enumerated(EnumType.STRING)
-    private Target target;
+    private TargetType targetType;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -36,10 +36,10 @@ public class Query {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Query(String queryString, int page, List<Book> books, Target target) {
+    public Query(String queryString, int page, List<Book> books, TargetType targetType) {
         this.queryString = queryString;
         this.page = page;
         this.books = books;
-        this.target = target;
+        this.targetType = targetType;
     }
 }
