@@ -5,7 +5,7 @@ import java.util.Base64;
 
 public class TokenGenerator {
 
-    private static int TOKEN_LENGTH = 16;
+    private static int TOKEN_LENGTH = 32;
 
     public static String generateToken() {
         SecureRandom random = new SecureRandom();

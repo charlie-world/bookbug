@@ -18,9 +18,10 @@ public class UserToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userTokenId;
 
-    @Column(name = "user_id", unique = true)
+    @Column(name = "userId", unique = true)
     private Long userId;
 
+    @Column(name = "token", unique = true)
     private String token;
 
     @CreatedDate

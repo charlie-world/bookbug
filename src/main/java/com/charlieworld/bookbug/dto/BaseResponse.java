@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 public class BaseResponse<T> implements JsonBase {
     private T data;
     private Meta meta;
-    private Pagination pagination;
 
     public BaseResponse(T data) {
         this.data = data;
@@ -21,6 +20,5 @@ public class BaseResponse<T> implements JsonBase {
     public BaseResponse(T data, Pagination pagination) {
         this.data = data;
         this.meta = new Meta(HttpStatus.OK, "success");
-        this.pagination = pagination;
     }
 }

@@ -16,13 +16,15 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired(required = true)
+    public static final String AUTH_KEY = "X-USER-AUTH";
+
+    @Autowired
     private UserRepository userRepository;
 
-    @Autowired(required = true)
+    @Autowired
     private UserTokenRepository userTokenRepository;
 
-    public Token join(String id, String password) throws CustomException {
+    public void join(String id, String password) throws CustomException {
         Optional<User> userData = userRepository.findByRealId(id);
         if (userData.isPresent()) {
             throw new CustomException(HttpStatus.CONFLICT, "이미 가입된 회원 입니다.");
@@ -39,7 +41,6 @@ public class UserService {
         String token = TokenGenerator.generateToken();
         UserToken userToken = UserToken.builder().token(token).userId(user.getUserId()).build();
         userTokenRepository.save(userToken);
-        return Token.builder().token(token).build();
     }
 
     public Token login(String id, String password) throws CustomException {
@@ -66,5 +67,14 @@ public class UserService {
         }
 
         return result;
+    }
+
+    public Long authenticate(String token) throws CustomException {
+        Optional<UserToken> userTokenOpt = userTokenRepository.findByToken(token);
+        if (!userTokenOpt.isPresent()) {
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "사용자 인증에 실패 하였습니다.");
+        } else {
+            return userTokenOpt.get().getUserId();
+        }
     }
 }
