@@ -12,18 +12,18 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(indexes = { @Index(name = "idx_real_id", columnList = "realId")})
-public class User {
+@Table(indexes = { @Index(name = "idx_count", columnList = "count")})
+public class Popular {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long popularId;
 
-    @Column(name = "realId", unique = true)
-    private String realId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "queryId")
+    private Query query;
 
-    private String encryptedPassword;
-    private String encryptKey;
+    private Long count;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -32,9 +32,9 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Builder
-    public User(String realId, String encryptedPassword, String encryptKey) {
-        this.realId = realId;
-        this.encryptedPassword = encryptedPassword;
-        this.encryptKey = encryptKey;
+    public Popular(Long popularId, Query query, Long count) {
+        this.popularId = popularId;
+        this.query = query;
+        this.count = count;
     }
 }
