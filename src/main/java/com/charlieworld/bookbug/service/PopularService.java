@@ -18,8 +18,7 @@ public class PopularService {
     public List<PopularKeyword> getPopularkeyword() {
         List<PopularKeyword> popularKeywordList = new ArrayList<>();
         List<Popular> populars = popularRepository.findTop10ByOrderByCountDesc();
-        for (int rank = 0; rank < populars.size(); rank++) {
-            Popular popular = populars.get(rank);
+        for (Popular popular : populars) {
             PopularKeyword keyword = PopularKeyword
                     .builder()
                     .query(popular.getQuery().getQueryString())

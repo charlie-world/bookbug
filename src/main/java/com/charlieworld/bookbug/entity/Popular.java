@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(indexes = { @Index(name = "idx_count", columnList = "count")})
+@Table(indexes = {@Index(name = "idx_count", columnList = "count")})
 public class Popular {
 
     @Id

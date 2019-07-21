@@ -21,6 +21,7 @@ public class UserToken {
     @Column(name = "userId", unique = true)
     private Long userId;
 
+    @Column(name = "token", unique = true)
     private String token;
 
     @CreatedDate

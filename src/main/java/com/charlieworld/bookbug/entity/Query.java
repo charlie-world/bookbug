@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(indexes = { @Index(name = "idx_query_string", columnList = "queryString")})
+@Table(indexes = {@Index(name = "idx_query_string", columnList = "queryString")})
 public class Query {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

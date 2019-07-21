@@ -3,14 +3,12 @@ package com.charlieworld.bookbug.service;
 import com.charlieworld.bookbug.dto.BookDetail;
 import com.charlieworld.bookbug.entity.Book;
 import com.charlieworld.bookbug.exception.CustomException;
-import com.charlieworld.bookbug.http.KakaoBook;
 import com.charlieworld.bookbug.repository.BookRepository;
 import com.charlieworld.bookbug.util.ArrayMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service

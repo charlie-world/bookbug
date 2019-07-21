@@ -1,9 +1,12 @@
 package com.charlieworld.bookbug.service;
 
 import com.charlieworld.bookbug.dto.Token;
+import com.charlieworld.bookbug.dto.UserHistory;
+import com.charlieworld.bookbug.entity.History;
 import com.charlieworld.bookbug.entity.User;
 import com.charlieworld.bookbug.entity.UserToken;
 import com.charlieworld.bookbug.exception.CustomException;
+import com.charlieworld.bookbug.repository.HistoryRepository;
 import com.charlieworld.bookbug.repository.UserRepository;
 import com.charlieworld.bookbug.repository.UserTokenRepository;
 import com.charlieworld.bookbug.util.TokenGenerator;
@@ -11,13 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
+    public static final String AUTH_KEY = "X-USER-AUTH";
+
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private HistoryRepository historyRepository;
 
     @Autowired
     private UserTokenRepository userTokenRepository;
@@ -65,5 +75,28 @@ public class UserService {
         }
 
         return result;
+    }
+
+    public List<UserHistory> getUserHistory(Long userId) {
+        List<UserHistory> userHistories = new ArrayList<>();
+        List<History> histories = historyRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        for (History history : histories) {
+            UserHistory userHistory = UserHistory
+                    .builder()
+                    .keyword(history.getQuery().getQueryString())
+                    .historyDateTime(history.getCreatedAt())
+                    .build();
+            userHistories.add(userHistory);
+        }
+        return userHistories;
+    }
+
+    public Long authenticate(String token) throws CustomException {
+        Optional<UserToken> userTokenOpt = userTokenRepository.findByToken(token);
+        if (!userTokenOpt.isPresent()) {
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "사용자 인증에 실패 하였습니다.");
+        } else {
+            return userTokenOpt.get().getUserId();
+        }
     }
 }
