@@ -2,10 +2,11 @@ package com.charlieworld.bookbug.http.model.kakao;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Data
-public class Document {
+public class Document implements Serializable {
     private String title;
     private String contents;
     private String isbn;

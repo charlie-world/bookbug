@@ -121,6 +121,7 @@ public class BookService {
                 queryRepository.save(query);
                 bookSimples = toBookSimple(insertedBooks);
             } catch (CustomException e) {
+                throw e;
                 // failover 로 naverBookHttp 하는 액션
             }
         } else {

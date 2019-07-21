@@ -1,5 +1,4 @@
 spring:
-  profiles: local
-
-  kakao-application:
+  kakao:
+    host: https://dapi.kakao.com/v3/search/book
     rest-api-key: 6bf56b87f7e20d13991fbf1a63fcb51b
