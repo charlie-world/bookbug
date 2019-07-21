@@ -18,7 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name="real_id" , unique=true)
+    @Column(name = "real_id", unique = true)
     private String realId;
 
     private String encryptedPassword;
