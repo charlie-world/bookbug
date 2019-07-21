@@ -45,15 +45,15 @@ public class BookController {
     @GetMapping("/v1/books")
     public BaseResponse searchBooks(
             @RequestHeader(value = UserService.AUTH_KEY) String token,
-            @RequestParam(value = "target-type")TargetType targetType,
-            @RequestParam(value = "page")int page,
-            @RequestParam(value = "query")String queryString
+            @RequestParam(value = "target-type") TargetType targetType,
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "query") String queryString
     ) {
         List<BookSimple> bookSimples = null;
         BaseResponse<List<BookSimple>> response = null;
         try {
-            //Long userId = userService.authenticate(token);
-            bookSimples = bookService.searchBooks(1L, queryString, page, targetType);
+            Long userId = userService.authenticate(token);
+            bookSimples = bookService.searchBooks(userId, queryString, page, targetType);
             response = new BaseResponse<>(bookSimples);
         } catch (CustomException e) {
             Meta meta = new Meta(e.getStatusCode(), e.getMessage());

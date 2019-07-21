@@ -12,7 +12,6 @@ import com.charlieworld.bookbug.repository.BookRepository;
 import com.charlieworld.bookbug.repository.QueryRepository;
 import com.charlieworld.bookbug.util.ArrayMapper;
 import com.charlieworld.bookbug.util.KakaoDocumentHelper;
-import jdk.nashorn.internal.runtime.options.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,7 @@ public class BookService {
     @Transactional
     private List<Book> insertBooks(List<Book> books) {
         List<Book> result = new ArrayList<>();
-        for (Book book: books) {
+        for (Book book : books) {
             Optional<Book> bookOpt = bookRepository.findByIsbn(book.getIsbn());
             if (!bookOpt.isPresent()) {
                 result.add(bookRepository.save(book));
@@ -56,7 +55,7 @@ public class BookService {
 
     private List<BookSimple> toBookSimple(List<Book> books) {
         List<BookSimple> bookSimples = new ArrayList<>();
-        for (Book book: books) {
+        for (Book book : books) {
             BookSimple bookSimple = BookSimple
                     .builder()
                     .bookId(book.getBookId())
@@ -107,7 +106,7 @@ public class BookService {
             try {
                 KakaoBookModel kakaoBookModel = kakaoBookHttpService.getBooks(page, queryString, targetType);
                 List<Book> books = new ArrayList<>();
-                for (Document document: kakaoBookModel.getDocuments()) {
+                for (Document document : kakaoBookModel.getDocuments()) {
                     books.add(KakaoDocumentHelper.toBook(document));
                 }
                 List<Book> insertedBooks = insertBooks(books);
