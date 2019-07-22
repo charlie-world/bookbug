@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 
 public class NaverItemHelper {
 
-    public static LocalDateTime parser(String str) {
+    public static LocalDateTime dateParser(String str) {
         if (str.length() == 4) {
             int year = Integer.parseInt(str);
-            return LocalDate.of(Integer.parseInt(str), 1, 1).atStartOfDay();
+            return LocalDate.of(year, 1, 1).atStartOfDay();
         } else if (str.length() == 6) {
             int year = Integer.parseInt(str.substring(0, 4));
             int month = Integer.parseInt(str.substring(4, 6));
@@ -32,7 +32,7 @@ public class NaverItemHelper {
                 .authors(item.getAuthor())
                 .contents(item.getDescription())
                 .publisher(item.getPublisher())
-                .publishDatetime(parser(item.getPubdate()))
+                .publishDatetime(dateParser(item.getPubdate()))
                 .thumbnail(item.getImage())
                 .price(item.getPrice())
                 .salePrice(item.getDiscount())
