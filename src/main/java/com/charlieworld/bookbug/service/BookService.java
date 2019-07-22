@@ -17,7 +17,6 @@ import com.charlieworld.bookbug.util.NaverItemHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,20 +43,6 @@ public class BookService {
     @Autowired
     private NaverBookHttpService naverBookHttpService;
 
-    @Transactional
-    List<Book> insertBooks(List<Book> books) {
-        List<Book> result = new ArrayList<>();
-        for (Book book : books) {
-            Optional<Book> bookOpt = bookRepository.findByIsbn(book.getIsbn());
-            if (!bookOpt.isPresent()) {
-                result.add(bookRepository.save(book));
-            } else {
-                result.add(bookOpt.get());
-            }
-        }
-        return result;
-    }
-
     public BookDetail getBookDetail(Long bookId) throws CustomException {
         BookDetail result = null;
         Optional<Book> book = bookRepository.findById(bookId);
@@ -82,7 +67,7 @@ public class BookService {
     }
 
     public BookList searchBooks(
-            Long userid,
+            Long userId,
             String queryString,
             int page,
             TargetType targetType
@@ -99,7 +84,7 @@ public class BookService {
                 List<Book> insertedBooks = bookRepository.saveAll(books);
                 bookList = queryCacheRepository
                         .put(targetType, queryString, page, kakaoBookModel.getMeta().isEnd(), insertedBooks);
-                historyService.upsert(userid, queryString);
+                historyService.upsert(userId, queryString);
             } catch (CustomException e) {
                 NaverBookModel naverBookModel = naverBookHttpService.search(page, queryString, targetType);
                 List<Book> books = new ArrayList<>();
@@ -113,7 +98,7 @@ public class BookService {
             }
         } else {
             bookList = cachedBookList;
-            historyService.upsert(userid, queryString);
+            historyService.upsert(userId, queryString);
         }
         popularService.upsert(queryString);
         return bookList;

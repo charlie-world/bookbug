@@ -17,7 +17,7 @@ public class NaverBookModel {
 
     private List<Item> items;
 
-    @XmlElementWrapper(name="channel")
+    @XmlElementWrapper(name = "channel")
     @XmlElement(name = "item")
     public List<Item> getItems() {
         return this.items;

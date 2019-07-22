@@ -1,7 +1,6 @@
 package com.charlieworld.bookbug.http.model.kakao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
 import lombok.Data;
 
 @Data

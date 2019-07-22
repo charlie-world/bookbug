@@ -11,16 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class NaverBookHttpService implements HttpService {
 
+    private final String apiPath = "/v1/search/book_adv.xml";
     @Value("${spring.naver.client-id}")
     private String naverClientId;
-
     @Value("${spring.naver.client-secret}")
     private String naverClientSecret;
-
     @Value("${spring.naver.host}")
     private String host;
-
-    private final String apiPath = "/v1/search/book_adv.xml";
 
     private String targetTypeMapper(TargetType targetType, String query) {
         TargetKey key;

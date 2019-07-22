@@ -1,8 +1,7 @@
-package com.charlieworld.bookbug;
+package com.charlieworld.bookbug.util;
 
 import com.charlieworld.bookbug.entity.Book;
 import com.charlieworld.bookbug.http.model.kakao.Document;
-import com.charlieworld.bookbug.util.KakaoDocumentHelper;
 import org.junit.Test;
 
 import java.time.OffsetDateTime;

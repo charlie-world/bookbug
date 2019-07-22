@@ -11,5 +11,7 @@ public enum TargetKey {
 
     private String value;
 
-    TargetKey(String value) { this.value = value; }
+    TargetKey(String value) {
+        this.value = value;
+    }
 }

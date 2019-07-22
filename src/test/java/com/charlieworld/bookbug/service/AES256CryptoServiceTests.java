@@ -1,7 +1,6 @@
-package com.charlieworld.bookbug;
+package com.charlieworld.bookbug.service;
 
 import com.charlieworld.bookbug.exception.CustomException;
-import com.charlieworld.bookbug.service.AES256CryptoService;
 import org.junit.Test;
 
 public class AES256CryptoServiceTests {

@@ -1,8 +1,7 @@
-package com.charlieworld.bookbug;
+package com.charlieworld.bookbug.util;
 
 import com.charlieworld.bookbug.entity.Book;
 import com.charlieworld.bookbug.http.model.naver.Item;
-import com.charlieworld.bookbug.util.NaverItemHelper;
 import org.junit.Test;
 
 import java.time.LocalDateTime;

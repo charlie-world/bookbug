@@ -1,6 +1,5 @@
-package com.charlieworld.bookbug;
+package com.charlieworld.bookbug.util;
 
-import com.charlieworld.bookbug.util.TokenGenerator;
 import org.junit.Test;
 
 public class TokenGeneratorTests {
