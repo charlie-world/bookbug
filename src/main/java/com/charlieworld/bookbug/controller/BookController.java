@@ -1,9 +1,6 @@
 package com.charlieworld.bookbug.controller;
 
-import com.charlieworld.bookbug.dto.BaseResponse;
-import com.charlieworld.bookbug.dto.BookDetail;
-import com.charlieworld.bookbug.dto.BookSimple;
-import com.charlieworld.bookbug.dto.Meta;
+import com.charlieworld.bookbug.dto.*;
 import com.charlieworld.bookbug.entity.TargetType;
 import com.charlieworld.bookbug.exception.CustomException;
 import com.charlieworld.bookbug.service.BookService;
@@ -49,12 +46,11 @@ public class BookController {
             @RequestParam(value = "page") int page,
             @RequestParam(value = "query") String queryString
     ) {
-        List<BookSimple> bookSimples = null;
-        BaseResponse<List<BookSimple>> response = null;
+        BaseResponse<BookList> response;
         try {
             Long userId = userService.authenticate(token);
-            bookSimples = bookService.searchBooks(userId, queryString, page, targetType);
-            response = new BaseResponse<>(bookSimples);
+            BookList bookList = bookService.searchBooks(userId, queryString, page, targetType);
+            response = new BaseResponse<>(bookList);
         } catch (CustomException e) {
             Meta meta = new Meta(e.getStatusCode(), e.getMessage());
             response = new BaseResponse<>(meta);

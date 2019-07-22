@@ -1,16 +1,15 @@
 package com.charlieworld.bookbug.service;
 
 import com.charlieworld.bookbug.dto.BookDetail;
-import com.charlieworld.bookbug.dto.BookSimple;
+import com.charlieworld.bookbug.dto.BookList;
 import com.charlieworld.bookbug.entity.Book;
-import com.charlieworld.bookbug.entity.Query;
 import com.charlieworld.bookbug.entity.TargetType;
 import com.charlieworld.bookbug.exception.CustomException;
 import com.charlieworld.bookbug.http.model.kakao.Document;
 import com.charlieworld.bookbug.http.model.kakao.KakaoBookModel;
 import com.charlieworld.bookbug.repository.BookRepository;
-import com.charlieworld.bookbug.repository.QueryRepository;
-import com.charlieworld.bookbug.util.ArrayMapper;
+import com.charlieworld.bookbug.repository.QueryCacheRepository;
+import com.charlieworld.bookbug.util.ArrayHelper;
 import com.charlieworld.bookbug.util.KakaoDocumentHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,7 @@ public class BookService {
     private BookRepository bookRepository;
 
     @Autowired
-    private QueryRepository queryRepository;
+    private QueryCacheRepository queryCacheRepository;
 
     @Autowired
     private PopularService popularService;
@@ -40,7 +39,7 @@ public class BookService {
     private KakaoBookHttpService kakaoBookHttpService;
 
     @Transactional
-    private List<Book> insertBooks(List<Book> books) {
+    List<Book> insertBooks(List<Book> books) {
         List<Book> result = new ArrayList<>();
         for (Book book : books) {
             Optional<Book> bookOpt = bookRepository.findByIsbn(book.getIsbn());
@@ -51,23 +50,6 @@ public class BookService {
             }
         }
         return result;
-    }
-
-    private List<BookSimple> toBookSimple(List<Book> books) {
-        List<BookSimple> bookSimples = new ArrayList<>();
-        for (Book book : books) {
-            BookSimple bookSimple = BookSimple
-                    .builder()
-                    .bookId(book.getBookId())
-                    .name(book.getName())
-                    .thumbnail(book.getThumbnail())
-                    .authors(ArrayMapper.stringToArray(book.getAuthors()))
-                    .price(book.getPrice())
-                    .salePrice(book.getSalePrice())
-                    .build();
-            bookSimples.add(bookSimple);
-        }
-        return bookSimples;
     }
 
     public BookDetail getBookDetail(Long bookId) throws CustomException {
@@ -81,7 +63,7 @@ public class BookService {
                     .thumbnail(book.get().getThumbnail())
                     .contents(book.get().getContents())
                     .isbn(book.get().getIsbn())
-                    .authors(ArrayMapper.stringToArray(book.get().getAuthors()))
+                    .authors(ArrayHelper.stringToArray(book.get().getAuthors()))
                     .publisher(book.get().getPublisher())
                     .publishDatetime(book.get().getPublishDatetime())
                     .price(book.get().getPrice())
@@ -93,42 +75,33 @@ public class BookService {
         return result;
     }
 
-    public List<BookSimple> searchBooks(
+    public BookList searchBooks(
             Long userid,
             String queryString,
             int page,
             TargetType targetType
     ) throws CustomException {
-        List<BookSimple> bookSimples = null;
-        Optional<Query> queryOpt =
-                queryRepository.findByQueryStringAndPageAndTargetType(queryString, page, targetType);
-        if (!queryOpt.isPresent()) {
+        BookList bookList;
+        BookList cachedBookList = queryCacheRepository.getCachedBookList(targetType, queryString, page);
+        if (cachedBookList == null) {
             try {
                 KakaoBookModel kakaoBookModel = kakaoBookHttpService.getBooks(page, queryString, targetType);
                 List<Book> books = new ArrayList<>();
                 for (Document document : kakaoBookModel.getDocuments()) {
                     books.add(KakaoDocumentHelper.toBook(document));
                 }
-                List<Book> insertedBooks = insertBooks(books);
-                Query query = Query
-                        .builder()
-                        .queryString(queryString)
-                        .books(insertedBooks)
-                        .page(page)
-                        .targetType(targetType)
-                        .build();
-                queryRepository.save(query);
-                bookSimples = toBookSimple(insertedBooks);
+                List<Book> insertedBooks = bookRepository.saveAll(books);
+                bookList = queryCacheRepository
+                        .putCachedBookList(targetType, queryString, page, kakaoBookModel.getMeta().isEnd(), insertedBooks);
             } catch (CustomException e) {
                 throw e;
                 // failover 로 naverBookHttp 하는 액션
             }
         } else {
-            List<Book> books = queryOpt.get().getBooks();
-            bookSimples = toBookSimple(books);
-            historyService.insertHistory(userid, queryOpt.get());
+            bookList = cachedBookList;
+            historyService.insertHistory(userid, queryString);
         }
         popularService.updatePopular(queryString);
-        return bookSimples;
+        return bookList;
     }
 }

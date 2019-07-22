@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class BookDetail implements JsonBase {
@@ -14,7 +14,7 @@ public class BookDetail implements JsonBase {
     private String thumbnail;
     private String contents;
     private String isbn;
-    private ArrayList<String> authors;
+    private List<String> authors;
     private String publisher;
     private LocalDateTime publishDatetime;
     private int price;
@@ -27,7 +27,7 @@ public class BookDetail implements JsonBase {
             String thumbnail,
             String contents,
             String isbn,
-            ArrayList<String> authors,
+            List<String> authors,
             String publisher,
             LocalDateTime publishDatetime,
             int price,

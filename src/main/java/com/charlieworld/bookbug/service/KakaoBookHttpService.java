@@ -8,8 +8,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URLEncoder;
-
 @Service
 public class KakaoBookHttpService {
 
@@ -30,12 +28,14 @@ public class KakaoBookHttpService {
     public KakaoBookModel getBooks(int page, String query, TargetType targetType) throws CustomException {
         KakaoBookModel model = null;
         try {
-            String encodedQuery = URLEncoder.encode(query, "UTF-8");
-            String params = String.format("?target=%s&page=%d&query=%s", targetType.getValue(), page, encodedQuery);
-            String uri = host + params;
-            ResponseEntity<KakaoBookModel> response = restTemplate.exchange(uri, HttpMethod.GET, makeAuthHeader(), KakaoBookModel.class);
+            String apiPath = "/v3/search/book";
+            String params = String.format("?target=%s&page=%d&query=%s", targetType.getValue(), page, query);
+            String uri = host + apiPath + params;
+            ResponseEntity<KakaoBookModel> response = restTemplate
+                    .exchange(uri, HttpMethod.GET, makeAuthHeader(), KakaoBookModel.class);
             model = response.getBody();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "서버와 통신 중 문제가 발생 하였습니다.");
         }
         return model;

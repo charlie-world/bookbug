@@ -21,9 +21,7 @@ public class History {
     @Column(name = "userId", unique = true)
     private Long userId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "queryId")
-    private Query query;
+    private String queryString;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -32,8 +30,8 @@ public class History {
     private LocalDateTime updatedAt;
 
     @Builder
-    public History(Long userId, Query query) {
+    public History(Long userId, String queryString) {
         this.userId = userId;
-        this.query = query;
+        this.queryString = queryString;
     }
 }

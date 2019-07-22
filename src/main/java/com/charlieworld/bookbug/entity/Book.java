@@ -20,6 +20,8 @@ public class Book {
 
     private String name;
     private String thumbnail;
+
+    @Column(name = "contents", length = 1024)
     private String contents;
 
     @Column(name = "isbn", unique = true)
