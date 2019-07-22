@@ -7,10 +7,13 @@ import com.charlieworld.bookbug.entity.TargetType;
 import com.charlieworld.bookbug.exception.CustomException;
 import com.charlieworld.bookbug.http.model.kakao.Document;
 import com.charlieworld.bookbug.http.model.kakao.KakaoBookModel;
+import com.charlieworld.bookbug.http.model.naver.Item;
+import com.charlieworld.bookbug.http.model.naver.NaverBookModel;
 import com.charlieworld.bookbug.repository.BookRepository;
 import com.charlieworld.bookbug.repository.QueryCacheRepository;
 import com.charlieworld.bookbug.util.ArrayHelper;
 import com.charlieworld.bookbug.util.KakaoDocumentHelper;
+import com.charlieworld.bookbug.util.NaverItemHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -37,6 +40,9 @@ public class BookService {
 
     @Autowired
     private KakaoBookHttpService kakaoBookHttpService;
+
+    @Autowired
+    private NaverBookHttpService naverBookHttpService;
 
     @Transactional
     List<Book> insertBooks(List<Book> books) {
@@ -94,8 +100,15 @@ public class BookService {
                 bookList = queryCacheRepository
                         .putCachedBookList(targetType, queryString, page, kakaoBookModel.getMeta().isEnd(), insertedBooks);
             } catch (CustomException e) {
-                throw e;
-                // failover 로 naverBookHttp 하는 액션
+                NaverBookModel naverBookModel = naverBookHttpService.getBooks(page, queryString, targetType);
+                List<Book> books = new ArrayList<>();
+                for (Item item : naverBookModel.getItems()) {
+                    books.add(NaverItemHelper.toBook(item));
+                }
+                List<Book> insertedBooks = insertBooks(books);
+                boolean isEnd = naverBookModel.getTotal() <= naverBookModel.getStart() + naverBookModel.getDisplay();
+                bookList = queryCacheRepository
+                        .putCachedBookList(targetType, queryString, page, isEnd, insertedBooks);
             }
         } else {
             bookList = cachedBookList;

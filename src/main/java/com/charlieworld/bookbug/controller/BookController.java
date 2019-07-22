@@ -48,8 +48,8 @@ public class BookController {
     ) {
         BaseResponse<BookList> response;
         try {
-            Long userId = userService.authenticate(token);
-            BookList bookList = bookService.searchBooks(userId, queryString, page, targetType);
+            //Long userId = userService.authenticate(token);
+            BookList bookList = bookService.searchBooks(1L, queryString, page, targetType);
             response = new BaseResponse<>(bookList);
         } catch (CustomException e) {
             Meta meta = new Meta(e.getStatusCode(), e.getMessage());
