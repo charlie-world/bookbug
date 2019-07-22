@@ -26,15 +26,15 @@ public class BookController {
             @PathVariable("bookId") Long bookId,
             @RequestHeader(value = UserService.AUTH_KEY) String token
     ) {
-        BookDetail bookDetail = null;
-        BaseResponse<BookDetail> response = null;
+        BookDetail bookDetail;
+        BaseResponse<BookDetail> response;
         try {
             userService.authenticate(token);
             bookDetail = bookService.getBookDetail(bookId);
-            response = new BaseResponse<BookDetail>(bookDetail);
+            response = new BaseResponse<>(bookDetail);
         } catch (CustomException e) {
             Meta meta = new Meta(e.getStatusCode(), e.getMessage());
-            response = new BaseResponse<BookDetail>(meta);
+            response = new BaseResponse<>(meta);
         }
         return response;
     }

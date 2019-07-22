@@ -7,10 +7,13 @@ import com.charlieworld.bookbug.entity.TargetType;
 import com.charlieworld.bookbug.exception.CustomException;
 import com.charlieworld.bookbug.http.model.kakao.Document;
 import com.charlieworld.bookbug.http.model.kakao.KakaoBookModel;
+import com.charlieworld.bookbug.http.model.naver.Item;
+import com.charlieworld.bookbug.http.model.naver.NaverBookModel;
 import com.charlieworld.bookbug.repository.BookRepository;
 import com.charlieworld.bookbug.repository.QueryCacheRepository;
 import com.charlieworld.bookbug.util.ArrayHelper;
 import com.charlieworld.bookbug.util.KakaoDocumentHelper;
+import com.charlieworld.bookbug.util.NaverItemHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -37,6 +40,9 @@ public class BookService {
 
     @Autowired
     private KakaoBookHttpService kakaoBookHttpService;
+
+    @Autowired
+    private NaverBookHttpService naverBookHttpService;
 
     @Transactional
     List<Book> insertBooks(List<Book> books) {
@@ -85,23 +91,31 @@ public class BookService {
         BookList cachedBookList = queryCacheRepository.getCachedBookList(targetType, queryString, page);
         if (cachedBookList == null) {
             try {
-                KakaoBookModel kakaoBookModel = kakaoBookHttpService.getBooks(page, queryString, targetType);
+                KakaoBookModel kakaoBookModel = kakaoBookHttpService.search(page, queryString, targetType);
                 List<Book> books = new ArrayList<>();
                 for (Document document : kakaoBookModel.getDocuments()) {
                     books.add(KakaoDocumentHelper.toBook(document));
                 }
                 List<Book> insertedBooks = bookRepository.saveAll(books);
                 bookList = queryCacheRepository
-                        .putCachedBookList(targetType, queryString, page, kakaoBookModel.getMeta().isEnd(), insertedBooks);
+                        .put(targetType, queryString, page, kakaoBookModel.getMeta().isEnd(), insertedBooks);
+                historyService.upsert(userid, queryString);
             } catch (CustomException e) {
-                throw e;
-                // failover 로 naverBookHttp 하는 액션
+                NaverBookModel naverBookModel = naverBookHttpService.search(page, queryString, targetType);
+                List<Book> books = new ArrayList<>();
+                for (Item item : naverBookModel.getItems()) {
+                    books.add(NaverItemHelper.toBook(item));
+                }
+                List<Book> insertedBooks = bookRepository.saveAll(books);
+                boolean isEnd = naverBookModel.getTotal() <= naverBookModel.getStart() + naverBookModel.getDisplay();
+                bookList = queryCacheRepository
+                        .put(targetType, queryString, page, isEnd, insertedBooks);
             }
         } else {
             bookList = cachedBookList;
-            historyService.insertHistory(userid, queryString);
+            historyService.upsert(userid, queryString);
         }
-        popularService.updatePopular(queryString);
+        popularService.upsert(queryString);
         return bookList;
     }
 }

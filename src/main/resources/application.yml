@@ -2,6 +2,10 @@ spring:
   kakao:
     host: https://dapi.kakao.com
     rest-api-key: 6bf56b87f7e20d13991fbf1a63fcb51b
+  naver:
+    host: https://openapi.naver.com
+    client-id: 4cJJt33QVTXPw8tO79nH
+    client-secret: w5hS64yKaC
   redis:
     host: localhost
     port: 6379
