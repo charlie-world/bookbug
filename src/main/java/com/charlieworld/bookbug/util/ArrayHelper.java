@@ -2,17 +2,18 @@ package com.charlieworld.bookbug.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ArrayHelper {
 
     private static String SEPERATOR = ",";
 
-    public static String arrayToString(ArrayList<String> arr) {
+    public static String arrayToString(List<String> arr) {
         return arr.toString().replace("[", "").replace("]", "").replaceAll(" ", "");
     }
 
-    public static ArrayList<String> stringToArray(String str) {
+    public static List<String> stringToArray(String str) {
         String[] splitedArr = str.split(SEPERATOR);
-        return new ArrayList<String>(Arrays.asList(splitedArr));
+        return new ArrayList<>(Arrays.asList(splitedArr));
     }
 }

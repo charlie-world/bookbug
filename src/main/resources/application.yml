@@ -1,6 +1,6 @@
 spring:
   kakao:
-    host: https://dapi.kakao.com/v3/search/book
+    host: https://dapi.kakao.com
     rest-api-key: 6bf56b87f7e20d13991fbf1a63fcb51b
   redis:
     host: localhost
