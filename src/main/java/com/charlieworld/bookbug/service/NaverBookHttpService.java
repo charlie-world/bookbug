@@ -45,7 +45,7 @@ public class NaverBookHttpService implements HttpService {
         return new HttpEntity(header);
     }
 
-    public NaverBookModel getBooks(int page, String query, TargetType targetType) throws CustomException {
+    public NaverBookModel search(int page, String query, TargetType targetType) throws CustomException {
         NaverBookModel model = null;
         try {
             String params = String.format("?start=%d&%s", page, targetTypeMapper(targetType, query));
@@ -54,7 +54,6 @@ public class NaverBookHttpService implements HttpService {
                     .exchange(uri, HttpMethod.GET, makeAuthHeader(), NaverBookModel.class);
             model = response.getBody();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "서버와 통신 중 문제가 발생 하였습니다.");
         }
         return model;

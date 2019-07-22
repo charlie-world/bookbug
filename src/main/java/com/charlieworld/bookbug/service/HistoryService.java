@@ -15,7 +15,7 @@ public class HistoryService {
     @Autowired
     private HistoryRepository historyRepository;
 
-    public List<UserHistory> getUserHistory(Long userId) {
+    public List<UserHistory> findByUserId(Long userId) {
         List<UserHistory> userHistories = new ArrayList<>();
         List<History> histories = historyRepository.findByUserIdOrderByCreatedAtDesc(userId);
         for (History history : histories) {
@@ -29,7 +29,7 @@ public class HistoryService {
         return userHistories;
     }
 
-    public void insertHistory(Long userId, String queryString) {
+    public void upsert(Long userId, String queryString) {
         historyRepository.save(History.builder().queryString(queryString).userId(userId).build());
     }
 }

@@ -24,7 +24,7 @@ public class KakaoBookHttpService implements HttpService {
         return new HttpEntity(header);
     }
 
-    public KakaoBookModel getBooks(int page, String query, TargetType targetType) throws CustomException {
+    public KakaoBookModel search(int page, String query, TargetType targetType) throws CustomException {
         KakaoBookModel model = null;
         try {
             String params = String.format("?target=%s&page=%d&query=%s", targetType.getValue(), page, query);
@@ -33,7 +33,6 @@ public class KakaoBookHttpService implements HttpService {
                     .exchange(uri, HttpMethod.GET, makeAuthHeader(), KakaoBookModel.class);
             model = response.getBody();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "서버와 통신 중 문제가 발생 하였습니다.");
         }
         return model;

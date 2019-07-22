@@ -29,7 +29,7 @@ public class PopularController {
         BaseResponse<List<PopularKeyword>> response;
         try {
             userService.authenticate(token);
-            List<PopularKeyword> popularKeywords = popularService.getPopularkeyword();
+            List<PopularKeyword> popularKeywords = popularService.findPopularkeyword();
             response = new BaseResponse<>(popularKeywords);
         } catch (CustomException e) {
             Meta meta = new Meta(e.getStatusCode(), e.getMessage());

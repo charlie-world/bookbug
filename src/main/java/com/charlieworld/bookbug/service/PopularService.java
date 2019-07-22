@@ -17,7 +17,7 @@ public class PopularService {
     @Autowired
     private PopularRepository popularRepository;
 
-    public List<PopularKeyword> getPopularkeyword() {
+    public List<PopularKeyword> findPopularkeyword() {
         List<PopularKeyword> popularKeywordList = new ArrayList<>();
         List<Popular> populars = popularRepository.findTop10ByOrderByCountDesc();
         for (Popular popular : populars) {
@@ -32,7 +32,7 @@ public class PopularService {
     }
 
     @Transactional
-    public void updatePopular(String query) {
+    public void upsert(String query) {
         Optional<Popular> popularOpt = popularRepository.findByQueryString(query);
         if (!popularOpt.isPresent()) {
             popularRepository.save(Popular.builder().count(1L).queryString(query).build());

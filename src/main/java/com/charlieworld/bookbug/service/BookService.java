@@ -91,30 +91,31 @@ public class BookService {
         BookList cachedBookList = queryCacheRepository.getCachedBookList(targetType, queryString, page);
         if (cachedBookList == null) {
             try {
-                KakaoBookModel kakaoBookModel = kakaoBookHttpService.getBooks(page, queryString, targetType);
+                KakaoBookModel kakaoBookModel = kakaoBookHttpService.search(page, queryString, targetType);
                 List<Book> books = new ArrayList<>();
                 for (Document document : kakaoBookModel.getDocuments()) {
                     books.add(KakaoDocumentHelper.toBook(document));
                 }
                 List<Book> insertedBooks = bookRepository.saveAll(books);
                 bookList = queryCacheRepository
-                        .putCachedBookList(targetType, queryString, page, kakaoBookModel.getMeta().isEnd(), insertedBooks);
+                        .put(targetType, queryString, page, kakaoBookModel.getMeta().isEnd(), insertedBooks);
+                historyService.upsert(userid, queryString);
             } catch (CustomException e) {
-                NaverBookModel naverBookModel = naverBookHttpService.getBooks(page, queryString, targetType);
+                NaverBookModel naverBookModel = naverBookHttpService.search(page, queryString, targetType);
                 List<Book> books = new ArrayList<>();
                 for (Item item : naverBookModel.getItems()) {
                     books.add(NaverItemHelper.toBook(item));
                 }
-                List<Book> insertedBooks = insertBooks(books);
+                List<Book> insertedBooks = bookRepository.saveAll(books);
                 boolean isEnd = naverBookModel.getTotal() <= naverBookModel.getStart() + naverBookModel.getDisplay();
                 bookList = queryCacheRepository
-                        .putCachedBookList(targetType, queryString, page, isEnd, insertedBooks);
+                        .put(targetType, queryString, page, isEnd, insertedBooks);
             }
         } else {
             bookList = cachedBookList;
-            historyService.insertHistory(userid, queryString);
+            historyService.upsert(userid, queryString);
         }
-        popularService.updatePopular(queryString);
+        popularService.upsert(queryString);
         return bookList;
     }
 }

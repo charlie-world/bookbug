@@ -58,7 +58,7 @@ public class UserController {
         BaseResponse<List<UserHistory>> response;
         try {
             Long userId = userService.authenticate(token);
-            response = new BaseResponse<>(historyService.getUserHistory(userId));
+            response = new BaseResponse<>(historyService.findByUserId(userId));
         } catch (CustomException e) {
             Meta meta = new Meta(e.getStatusCode(), e.getMessage());
             response = new BaseResponse<>(meta);
