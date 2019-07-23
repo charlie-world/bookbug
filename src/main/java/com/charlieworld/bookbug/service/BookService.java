@@ -17,6 +17,7 @@ import com.charlieworld.bookbug.util.NaverItemHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,21 @@ public class BookService {
 
     @Autowired
     private NaverBookHttpService naverBookHttpService;
+
+    @Transactional
+    private List<Book> upsertBooks(List<Book> books) {
+        List<Book> bookList = new ArrayList<>();
+        for (Book book: books) {
+            Optional<Book> bookOpt = bookRepository.findByIsbn(book.getIsbn());
+            if (!bookOpt.isPresent()) {
+                Book newBook = bookRepository.save(book);
+                bookList.add(newBook);
+            } else {
+                bookList.add(bookOpt.get());
+            }
+        }
+        return bookList;
+    }
 
     public BookDetail getBookDetail(Long bookId) throws CustomException {
         BookDetail result = null;
@@ -81,7 +97,7 @@ public class BookService {
                 for (Document document : kakaoBookModel.getDocuments()) {
                     books.add(KakaoDocumentHelper.toBook(document));
                 }
-                List<Book> insertedBooks = bookRepository.saveAll(books);
+                List<Book> insertedBooks = upsertBooks(books);
                 bookList = queryCacheRepository
                         .put(targetType, queryString, page, kakaoBookModel.getMeta().getPageableCount(), kakaoBookModel.getMeta().isEnd(), insertedBooks);
                 historyService.upsert(userId, queryString);

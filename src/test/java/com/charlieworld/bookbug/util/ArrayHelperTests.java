@@ -4,22 +4,23 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
 
 public class ArrayHelperTests {
 
     @Test
     public void arrayToStringTest() {
         String[] str = new String[]{"foo", "bar", "baz"};
-        ArrayList<String> input = new ArrayList<String>(Arrays.asList(str));
+        ArrayList<String> input = new ArrayList<>(Arrays.asList(str));
         String expect = "foo,bar,baz";
-        assert ArrayHelper.arrayToString(input).equals(expect);
+        assertEquals(ArrayHelper.arrayToString(input), expect);
     }
 
     @Test
     public void stringToArrayTest() {
         String input = "foo,bar,baz";
         String[] str = new String[]{"foo", "bar", "baz"};
-        ArrayList<String> expect = new ArrayList<String>(Arrays.asList(str));
-        assert ArrayHelper.stringToArray(input).equals(expect);
+        ArrayList<String> expect = new ArrayList<>(Arrays.asList(str));
+        assertEquals(ArrayHelper.stringToArray(input), expect);
     }
 }

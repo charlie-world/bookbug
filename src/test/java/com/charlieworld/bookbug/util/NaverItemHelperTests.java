@@ -58,21 +58,12 @@ public class NaverItemHelperTests {
         Book expected = NaverItemHelper.toBook(item);
 
         assertEquals(expected.getAuthors(), item.getAuthor());
-        assertEquals(expected.getAuthors(), item.getAuthor());
-        assertEquals(expected.getAuthors(), item.getAuthor());
-        assertEquals(expected.getAuthors(), item.getAuthor());
-        assertEquals(expected.getAuthors(), item.getAuthor());
-        assertEquals(expected.getAuthors(), item.getAuthor());
-        assertEquals(expected.getAuthors(), item.getAuthor());
-        assertEquals(expected.getAuthors(), item.getAuthor());
-        assertEquals(expected.getAuthors(), item.getAuthor());
-
-        assert expected.getIsbn().equals(item.getIsbn());
-        assert expected.getName().equals(item.getTitle());
-        assert expected.getPublishDatetime().equals(NaverItemHelper.dateParser(item.getPubdate()));
-        assert expected.getPublisher().equals(item.getPublisher());
-        assert expected.getContents().equals(item.getDescription());
-        assert expected.getPrice() == item.getPrice();
-        assert expected.getSalePrice() == item.getDiscount();
+        assertEquals(expected.getIsbn(), item.getIsbn());
+        assertEquals(expected.getName(), item.getTitle());
+        assertEquals(expected.getPublishDatetime(), NaverItemHelper.dateParser(item.getPubdate()));
+        assertEquals(expected.getPublisher(), item.getPublisher());
+        assertEquals(expected.getContents(), item.getDescription());
+        assertEquals(expected.getPrice(), item.getPrice());
+        assertEquals(expected.getSalePrice(), item.getDiscount());
     }
 }
