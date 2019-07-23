@@ -1,6 +1,6 @@
-package com.charlieworld.bookbug.util;
+package com.charlieworld.bookbug;
 
-import org.junit.Assert;
+import com.charlieworld.bookbug.util.CacheHelper;
 import org.junit.Test;
 
 public class CacheHelperTests {
@@ -12,6 +12,6 @@ public class CacheHelperTests {
 
         String expect = "abcdedf-1";
 
-        Assert.assertEquals(CacheHelper.cacheKey(queryString, page), expect);
+        assert CacheHelper.cacheKey(queryString, page).equals(expect);
     }
 }

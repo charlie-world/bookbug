@@ -45,18 +45,17 @@ public class BookService {
     private NaverBookHttpService naverBookHttpService;
 
     @Transactional
-    private List<Book> upsertBooks(List<Book> books) {
-        List<Book> bookList = new ArrayList<>();
-        for (Book book: books) {
+    List<Book> insertBooks(List<Book> books) {
+        List<Book> result = new ArrayList<>();
+        for (Book book : books) {
             Optional<Book> bookOpt = bookRepository.findByIsbn(book.getIsbn());
             if (!bookOpt.isPresent()) {
-                Book newBook = bookRepository.save(book);
-                bookList.add(newBook);
+                result.add(bookRepository.save(book));
             } else {
-                bookList.add(bookOpt.get());
+                result.add(bookOpt.get());
             }
         }
-        return bookList;
+        return result;
     }
 
     public BookDetail getBookDetail(Long bookId) throws CustomException {
@@ -83,7 +82,7 @@ public class BookService {
     }
 
     public BookList searchBooks(
-            Long userId,
+            Long userid,
             String queryString,
             int page,
             TargetType targetType
@@ -97,10 +96,10 @@ public class BookService {
                 for (Document document : kakaoBookModel.getDocuments()) {
                     books.add(KakaoDocumentHelper.toBook(document));
                 }
-                List<Book> insertedBooks = upsertBooks(books);
+                List<Book> insertedBooks = bookRepository.saveAll(books);
                 bookList = queryCacheRepository
-                        .put(targetType, queryString, page, kakaoBookModel.getMeta().getPageableCount(), kakaoBookModel.getMeta().isEnd(), insertedBooks);
-                historyService.upsert(userId, queryString);
+                        .put(targetType, queryString, page, kakaoBookModel.getMeta().isEnd(), insertedBooks);
+                historyService.upsert(userid, queryString);
             } catch (CustomException e) {
                 NaverBookModel naverBookModel = naverBookHttpService.search(page, queryString, targetType);
                 List<Book> books = new ArrayList<>();
@@ -110,11 +109,11 @@ public class BookService {
                 List<Book> insertedBooks = bookRepository.saveAll(books);
                 boolean isEnd = naverBookModel.getTotal() <= naverBookModel.getStart() + naverBookModel.getDisplay();
                 bookList = queryCacheRepository
-                        .put(targetType, queryString, page, naverBookModel.getTotal(), isEnd, insertedBooks);
+                        .put(targetType, queryString, page, isEnd, insertedBooks);
             }
         } else {
             bookList = cachedBookList;
-            historyService.upsert(userId, queryString);
+            historyService.upsert(userid, queryString);
         }
         popularService.upsert(queryString);
         return bookList;

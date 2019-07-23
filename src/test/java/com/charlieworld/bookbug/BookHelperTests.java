@@ -1,8 +1,9 @@
-package com.charlieworld.bookbug.util;
+package com.charlieworld.bookbug;
 
 import com.charlieworld.bookbug.dto.BookSimple;
 import com.charlieworld.bookbug.entity.Book;
-import org.junit.Assert;
+import com.charlieworld.bookbug.util.ArrayHelper;
+import com.charlieworld.bookbug.util.BookHelper;
 import org.junit.Test;
 
 import java.time.OffsetDateTime;
@@ -55,6 +56,6 @@ public class BookHelperTests {
         List<BookSimple> expect = new ArrayList<>();
         expect.add(bookSimple);
 
-        Assert.assertEquals(BookHelper.toBookSimple(input), expect);
+        assert BookHelper.toBookSimple(input).equals(expect);
     }
 }

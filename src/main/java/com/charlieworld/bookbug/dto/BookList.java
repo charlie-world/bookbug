@@ -9,14 +9,12 @@ import java.util.List;
 public class BookList implements JsonBase {
     private List<BookSimple> books;
     private int page;
-    private int total;
     private boolean isEnd;
 
     @Builder
-    public BookList(List<BookSimple> books, int page, int total, boolean isEnd) {
+    public BookList(List<BookSimple> books, int page, boolean isEnd) {
         this.books = books;
         this.page = page;
-        this.total = total;
         this.isEnd = isEnd;
     }
 }

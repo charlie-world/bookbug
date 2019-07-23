@@ -24,7 +24,7 @@ public class PopularController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/api/v1/populars-keyword")
+    @GetMapping("/v1/populars-keyword")
     public BaseResponse getTop10Keyword(@RequestHeader(value = UserService.AUTH_KEY) String token) {
         BaseResponse<List<PopularKeyword>> response;
         try {

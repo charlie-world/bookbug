@@ -11,8 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Ignore
 public class BookbugApplicationTests {
 
-    @Test
-    public void contextLoads() {
-    }
+	@Test
+	public void contextLoads() {
+	}
 
 }

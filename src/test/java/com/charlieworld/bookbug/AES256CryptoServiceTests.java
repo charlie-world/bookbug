@@ -1,8 +1,8 @@
-package com.charlieworld.bookbug.service;
+package com.charlieworld.bookbug;
 
 import com.charlieworld.bookbug.exception.CustomException;
+import com.charlieworld.bookbug.service.AES256CryptoService;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class AES256CryptoServiceTests {
 
@@ -14,7 +14,7 @@ public class AES256CryptoServiceTests {
         try {
             String cipher = aes256CryptoService.encryptB64(plainText);
             String plain = aes256CryptoService.decryptB64(cipher);
-            assertEquals(plainText, plain);
+            assert plainText.equals(plain);
         } catch (CustomException e) {
             e.printStackTrace();
         }

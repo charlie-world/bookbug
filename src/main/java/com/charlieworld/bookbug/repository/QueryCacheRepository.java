@@ -31,11 +31,11 @@ public class QueryCacheRepository {
         return cachedBooks;
     }
 
-    public BookList put(TargetType targetType, String queryString, int page, int total, boolean isEnd, List<Book> books) {
+    public BookList put(TargetType targetType, String queryString, int page, boolean isEnd, List<Book> books) {
         Cache cache = cacheManager.getCache(targetType.getValue());
         String cacheKey = CacheHelper.cacheKey(queryString, page);
         List<BookSimple> bookSimples = BookHelper.toBookSimple(books);
-        BookList bookList = BookList.builder().books(bookSimples).total(total).page(page).isEnd(isEnd).build();
+        BookList bookList = BookList.builder().books(bookSimples).page(page).isEnd(isEnd).build();
         cache.put(cacheKey, bookList);
         return bookList;
     }

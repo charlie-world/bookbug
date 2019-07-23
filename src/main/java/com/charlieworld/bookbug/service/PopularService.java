@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class PopularService {
 
     @Autowired
@@ -24,7 +23,7 @@ public class PopularService {
         for (Popular popular : populars) {
             PopularKeyword keyword = PopularKeyword
                     .builder()
-                    .queryString(popular.getQueryString())
+                    .query(popular.getQueryString())
                     .count(popular.getCount())
                     .build();
             popularKeywordList.add(keyword);
@@ -32,19 +31,15 @@ public class PopularService {
         return popularKeywordList;
     }
 
-    public void upsert(String queryString) {
-        Optional<Popular> popularOpt = popularRepository.findByQueryString(queryString);
-        Popular popular;
-        if (popularOpt.isPresent()) {
-            popular = Popular
-                    .builder()
-                    .popularId(popularOpt.get().getPopularId())
-                    .count(popularOpt.get().getCount() + 1)
-                    .queryString(queryString)
-                    .build();
+    @Transactional
+    public void upsert(String query) {
+        Optional<Popular> popularOpt = popularRepository.findByQueryString(query);
+        if (!popularOpt.isPresent()) {
+            popularRepository.save(Popular.builder().count(1L).queryString(query).build());
         } else {
-            popular = Popular.builder().count(1L).queryString(queryString).build();
+            Popular popular = popularOpt.get();
+            popular.setCount(popular.getCount() + 1L);
+            popularRepository.save(popular);
         }
-        popularRepository.save(popular);
     }
 }

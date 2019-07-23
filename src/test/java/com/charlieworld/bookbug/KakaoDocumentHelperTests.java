@@ -1,13 +1,12 @@
-package com.charlieworld.bookbug.util;
+package com.charlieworld.bookbug;
 
 import com.charlieworld.bookbug.entity.Book;
 import com.charlieworld.bookbug.http.model.kakao.Document;
+import com.charlieworld.bookbug.util.KakaoDocumentHelper;
 import org.junit.Test;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-
-import static org.junit.Assert.assertEquals;
 
 public class KakaoDocumentHelperTests {
 
@@ -51,13 +50,13 @@ public class KakaoDocumentHelperTests {
                 .build();
         Book expected = KakaoDocumentHelper.toBook(document);
 
-        assertEquals(expected.getAuthors(), book.getAuthors());
-        assertEquals(expected.getIsbn(), book.getIsbn());
-        assertEquals(expected.getName(), book.getName());
-        assertEquals(expected.getPublishDatetime(), book.getPublishDatetime());
-        assertEquals(expected.getPublisher(), book.getPublisher());
-        assertEquals(expected.getContents(), book.getContents());
-        assertEquals(expected.getPrice(), book.getPrice());
-        assertEquals(expected.getSalePrice(), book.getSalePrice());
+        assert expected.getAuthors().equals(book.getAuthors());
+        assert expected.getIsbn().equals(book.getIsbn());
+        assert expected.getName().equals(book.getName());
+        assert expected.getPublishDatetime().equals(book.getPublishDatetime());
+        assert expected.getPublisher().equals(book.getPublisher());
+        assert expected.getContents().equals(book.getContents());
+        assert expected.getPrice() == book.getPrice();
+        assert expected.getSalePrice() == book.getSalePrice();
     }
 }

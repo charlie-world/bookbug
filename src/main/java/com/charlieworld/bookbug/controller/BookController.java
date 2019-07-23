@@ -1,9 +1,6 @@
 package com.charlieworld.bookbug.controller;
 
-import com.charlieworld.bookbug.dto.BaseResponse;
-import com.charlieworld.bookbug.dto.BookDetail;
-import com.charlieworld.bookbug.dto.BookList;
-import com.charlieworld.bookbug.dto.Meta;
+import com.charlieworld.bookbug.dto.*;
 import com.charlieworld.bookbug.entity.TargetType;
 import com.charlieworld.bookbug.exception.CustomException;
 import com.charlieworld.bookbug.service.BookService;
@@ -11,6 +8,8 @@ import com.charlieworld.bookbug.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -22,7 +21,7 @@ public class BookController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/api/v1/books/{bookId}")
+    @GetMapping("/v1/books/{bookId}")
     public BaseResponse getBookDetail(
             @PathVariable("bookId") Long bookId,
             @RequestHeader(value = UserService.AUTH_KEY) String token
@@ -40,7 +39,7 @@ public class BookController {
         return response;
     }
 
-    @GetMapping("/api/v1/books")
+    @GetMapping("/v1/books")
     public BaseResponse searchBooks(
             @RequestHeader(value = UserService.AUTH_KEY) String token,
             @RequestParam(value = "target-type") TargetType targetType,
