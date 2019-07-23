@@ -5,12 +5,12 @@ import lombok.Data;
 
 @Data
 public class PopularKeyword implements JsonBase {
-    private String query;
+    private String queryString;
     private Long count;
 
     @Builder
-    public PopularKeyword(String query, Long count) {
-        this.query = query;
+    public PopularKeyword(String queryString, Long count) {
+        this.queryString = queryString;
         this.count = count;
     }
 }

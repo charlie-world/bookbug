@@ -10,13 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class KakaoBookHttpService implements HttpService {
 
+    private final String apiPath = "/v3/search/book";
     @Value("${spring.kakao.rest-api-key}")
     private String kakaoAppKey;
-
     @Value("${spring.kakao.host}")
     private String host;
-
-    private final String apiPath = "/v3/search/book";
 
     private HttpEntity makeAuthHeader() {
         HttpHeaders header = new HttpHeaders();

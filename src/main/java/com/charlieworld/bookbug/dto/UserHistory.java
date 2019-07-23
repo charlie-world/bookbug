@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class UserHistory {
+public class UserHistory implements JsonBase {
     private String keyword;
     private LocalDateTime historyDateTime;
 

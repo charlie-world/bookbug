@@ -11,16 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class NaverBookHttpService implements HttpService {
 
+    private final String apiPath = "/v1/search/book_adv.xml";
     @Value("${spring.naver.client-id}")
     private String naverClientId;
-
     @Value("${spring.naver.client-secret}")
     private String naverClientSecret;
-
     @Value("${spring.naver.host}")
     private String host;
-
-    private final String apiPath = "/v1/search/book_adv.xml";
 
     private String targetTypeMapper(TargetType targetType, String query) {
         TargetKey key;
@@ -46,9 +43,9 @@ public class NaverBookHttpService implements HttpService {
     }
 
     public NaverBookModel search(int page, String query, TargetType targetType) throws CustomException {
-        NaverBookModel model = null;
+        NaverBookModel model;
         try {
-            String params = String.format("?start=%d&%s", page, targetTypeMapper(targetType, query));
+            String params = String.format("?start=%d&%s", page * 10L, targetTypeMapper(targetType, query));
             String uri = host + apiPath + params;
             ResponseEntity<NaverBookModel> response = restTemplate
                     .exchange(uri, HttpMethod.GET, makeAuthHeader(), NaverBookModel.class);

@@ -3,8 +3,8 @@ package com.charlieworld.bookbug.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,10 +33,10 @@ public class Book {
     private int price;
     private int salePrice;
 
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @Builder

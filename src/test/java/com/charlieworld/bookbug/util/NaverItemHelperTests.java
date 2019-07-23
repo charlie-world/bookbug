@@ -1,30 +1,33 @@
-package com.charlieworld.bookbug;
+package com.charlieworld.bookbug.util;
 
 import com.charlieworld.bookbug.entity.Book;
 import com.charlieworld.bookbug.http.model.naver.Item;
-import com.charlieworld.bookbug.util.NaverItemHelper;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import static org.junit.Assert.assertEquals;
 
 public class NaverItemHelperTests {
 
     @Test
     public void dateParserTest() {
         String dateType1 = "2019";
-        assert NaverItemHelper
-                .dateParser(dateType1)
-                .equals(LocalDateTime.of(2019, 1, 1, 0, 0));
+        assertEquals(
+                NaverItemHelper.dateParser(dateType1),
+                LocalDateTime.of(2019, 1, 1, 0, 0)
+        );
 
         String dateType2 = "201902";
-        assert NaverItemHelper
-                .dateParser(dateType2)
-                .equals(LocalDateTime.of(2019, 2, 1, 0, 0));
+        assertEquals(
+                NaverItemHelper.dateParser(dateType2),
+                LocalDateTime.of(2019, 2, 1, 0, 0)
+        );
 
         String dateType3 = "20190307";
-        assert NaverItemHelper
-                .dateParser(dateType3)
-                .equals(LocalDateTime.of(2019, 3, 7, 0, 0));
+        assertEquals(
+                NaverItemHelper.dateParser(dateType3),
+                LocalDateTime.of(2019, 3, 7, 0, 0)
+        );
     }
 
     @Test
@@ -54,13 +57,13 @@ public class NaverItemHelperTests {
 
         Book expected = NaverItemHelper.toBook(item);
 
-        assert expected.getAuthors().equals(item.getAuthor());
-        assert expected.getIsbn().equals(item.getIsbn());
-        assert expected.getName().equals(item.getTitle());
-        assert expected.getPublishDatetime().equals(NaverItemHelper.dateParser(item.getPubdate()));
-        assert expected.getPublisher().equals(item.getPublisher());
-        assert expected.getContents().equals(item.getDescription());
-        assert expected.getPrice() == item.getPrice();
-        assert expected.getSalePrice() == item.getDiscount();
+        assertEquals(expected.getAuthors(), item.getAuthor());
+        assertEquals(expected.getIsbn(), item.getIsbn());
+        assertEquals(expected.getName(), item.getTitle());
+        assertEquals(expected.getPublishDatetime(), NaverItemHelper.dateParser(item.getPubdate()));
+        assertEquals(expected.getPublisher(), item.getPublisher());
+        assertEquals(expected.getContents(), item.getDescription());
+        assertEquals(expected.getPrice(), item.getPrice());
+        assertEquals(expected.getSalePrice(), item.getDiscount());
     }
 }

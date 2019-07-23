@@ -25,7 +25,7 @@ public class UserController {
     @Autowired
     private HistoryService historyService;
 
-    @PostMapping("/v1/users/join")
+    @PostMapping("/api/v1/users/join")
     public BaseResponse join(@RequestBody UserAuth userAuth) {
         BaseResponse<Token> response;
         try {
@@ -39,7 +39,7 @@ public class UserController {
         return response;
     }
 
-    @PostMapping("/v1/users/login")
+    @PostMapping("/api/v1/users/login")
     public BaseResponse login(@RequestBody UserAuth userAuth) {
         Token token;
         BaseResponse<Token> response;
@@ -53,7 +53,7 @@ public class UserController {
         return response;
     }
 
-    @GetMapping("/v1/users/history")
+    @GetMapping("/api/v1/users/history")
     public BaseResponse getHistory(@RequestHeader(value = UserService.AUTH_KEY) String token) {
         BaseResponse<List<UserHistory>> response;
         try {
