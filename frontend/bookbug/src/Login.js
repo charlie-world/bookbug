@@ -3,7 +3,6 @@ import Config from './config.js';
 import { Link, Redirect } from 'react-router-dom';
 import 'whatwg-fetch';
 import logo from './logo.png';
-import Search from './Search.js';
 
 class Login extends Component {
 	constructor(){
@@ -31,9 +30,9 @@ class Login extends Component {
 			},
 			body: JSON.stringify(userInfo)
 	    }).then((response)=> response.json())
-	    .then((responseData)=> {
+		.then((responseData)=> {
 			if (responseData.meta.result_code === 200) {
-				localStorage.setItem('token', responseData.data.token);
+				sessionStorage.setItem('token', responseData.data.token);
 				this.props.history.push('/search');
 			} else {
 				alert(responseData.meta.result_msg);
@@ -49,7 +48,7 @@ class Login extends Component {
 	}
 
 	render() {
-		if (localStorage.getItem('token') != null) {
+		if (sessionStorage.getItem('token') != null) {
 			return (
 					<Redirect to="/search"/>
 			);
@@ -63,7 +62,7 @@ class Login extends Component {
 							<h3><input type="text" name="requestID" placeholder="Id" value={this.state.requestID} onChange={this.requestIDChange}/></h3>
 							<h3><input type="password" name="requestPW" placeholder="Password" value={this.state.requestPW} onChange={this.requestPWChange}/></h3>
 							<h3><button className="loginwindowbutton" onClick={this.onSubmit.bind(this)}>로그인</button></h3>
-							<h3><Link to="/join"><button className="joinwindowsbutton">회원가입</button></Link></h3>
+							<Link to="/join"><button className="joinwindowsbutton">회원가입</button></Link>
 						</ul>
 					</div>
 				</div>

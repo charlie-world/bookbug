@@ -1,6 +1,8 @@
 package com.charlieworld.bookbug.util;
 
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TokenGeneratorTests {
 
@@ -8,7 +10,7 @@ public class TokenGeneratorTests {
     public void generateToken() {
         String token = TokenGenerator.generateToken();
 
-        assert token != null;
-        assert token.getClass() == String.class;
+        assertNotNull(token);
+        assertEquals(token.getClass(), String.class);
     }
 }

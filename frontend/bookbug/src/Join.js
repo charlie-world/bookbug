@@ -9,13 +9,7 @@ class Join extends Component {
 			requestID: '',
 			requestPW: ''
 		};
-		this.alertOptions = {
-			offset: 14,
-			position: 'top right',
-			theme: 'dark',
-			time: 5000,
-			transition: 'scale'
-		};
+
 		this.requestIDChange = this.requestIDChange.bind(this);
 		this.requestPWChange = this.requestPWChange.bind(this);
 	}
@@ -33,14 +27,14 @@ class Join extends Component {
 				'Access-Control-Allow-Origin': '*'
 			},
 			body: JSON.stringify(userInfo)
-	    }).then((response)=> response.json())
-	    .then((responseData)=> {
+		}).then((response)=> response.json())
+		.then((responseData)=> {
 			if (responseData.meta.result_code === 201) {
-        alert('회원 가입 성공');
+				alert('회원 가입 성공');
 			} else {
-        alert(responseData.meta.result_msg);
-      }
-      this.props.history.push('/login');
+				alert(responseData.meta.result_msg);
+			}
+			this.props.history.push('/login');
 		});
 	}
 
