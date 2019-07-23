@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Config from './config.js';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import 'whatwg-fetch';
 import Search from './Search.js';
 import logo from './logo.png';
@@ -58,7 +58,9 @@ class Login extends Component {
 
 	render() {
 		if (localStorage.getItem('token') != null) {
-			this.props.history.push('/search');
+			return (
+					<Redirect to="/search"/>
+			);
 		} else {
 			return (
 				<div className="loginpanel">
