@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import logo from './logo.png';
-import './Home.css';
 import Search from './Search.js';
-import LoginPanel from './LoginPanel.js';
+import Login from './Login.js';
 
-class Home extends Component {
+class App extends Component {
   onLogout() {
     localStorage.removeItem('token');
   }
@@ -16,10 +15,10 @@ class Home extends Component {
       );
     } else {
       return (
-        <LoginPanel/>
+        <Login/>
       );
     }
   }
 }
 
-export default Home;
+export default App;

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import Config from './config.js';
+import Join from './Join.js';
 import 'whatwg-fetch';
 
-class LoginPanel extends Component {
+class Login extends Component {
 	constructor(){
 		super(...arguments);
 		this.state ={
@@ -20,12 +22,16 @@ class LoginPanel extends Component {
 		this.requestPWChange = this.requestPWChange.bind(this);
 	}
 
-	onSubmit(){
+	onJoin() {
+
+	}
+
+	onSubmit() {
 		let userInfo = {
 			'id':this.state.requestID,
 			'password':this.state.requestPW
 		};
-		let apiPath = 'http://localhost:8080/api/v1/users/login';
+		let apiPath = `${Config.host}/api/v1/users/login`;
 		fetch(apiPath, {
 			method: 'POST',
 			headers:{
@@ -38,19 +44,19 @@ class LoginPanel extends Component {
 			if (responseData.meta.result_code === 200) {
 				localStorage.setItem('token', responseData.data.token);
 			} else {
-				alert("회원가입점요");
+				alert(responseData.meta.result_msg);
 			}
 		});
 	}
 
-	requestIDChange(event){
+	requestIDChange(event) {
 		this.setState({requestID: event.target.value});
 	}
-	requestPWChange(event){
+	requestPWChange(event) {
 		this.setState({requestPW: event.target.value});
 	}
 
-	render(){
+	render() {
 		return (
 			<div className="loginpanel">
 				<div className="loginwindow">
@@ -59,6 +65,7 @@ class LoginPanel extends Component {
 						<li><input type="text" name="requestID" placeholder="Id" value={this.state.requestID} onChange={this.requestIDChange}/></li>
 						<li><input type="password" name="requestPW" placeholder="Password" value={this.state.requestPW} onChange={this.requestPWChange}/></li>
 						<li><button className="loginwindowbutton" onClick={this.onSubmit.bind(this)}>로그인</button></li>
+						<li><button className="joinwindowsbutton" onClick={Join}>회원가입</button></li>
 					</ul>
 				</div>
 			</div>
@@ -66,4 +73,4 @@ class LoginPanel extends Component {
 	}
 }
 
-export default LoginPanel;
+export default Login;
