@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Config from './config.js';
 import 'whatwg-fetch';
-import { Link } from 'react-router-dom';
 
 class Join extends Component {
   constructor() {

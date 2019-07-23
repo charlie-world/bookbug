@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Config from './config.js';
 import { Link, Redirect } from 'react-router-dom';
 import 'whatwg-fetch';
-import Search from './Search.js';
 import logo from './logo.png';
+import Search from './Search.js';
 
 class Login extends Component {
 	constructor(){
@@ -12,14 +12,7 @@ class Login extends Component {
 			requestID:'',
 			requestPW:''
 		};
-		this.alertOptions = {
-			offset: 14,
-			position: 'top right',
-			theme: 'dark',
-			time: 5000,
-			transition: 'scale'
-		};
-
+	
 		this.requestIDChange = this.requestIDChange.bind(this);
 		this.requestPWChange = this.requestPWChange.bind(this);
 	}
@@ -44,7 +37,6 @@ class Login extends Component {
 				this.props.history.push('/search');
 			} else {
 				alert(responseData.meta.result_msg);
-				this.props.history.push('/login');
 			}
 		});
 	}

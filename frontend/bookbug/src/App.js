@@ -18,6 +18,7 @@ class App extends Component {
             <Route path="/search" component={Search} />
             <Route path = "/join" component = {Join} />
             <Route path = "/login" component = {Login} />
+            <Route path = "/book/:bookId" component = {Book} />
           </Switch>
         </div>
       </Router>
