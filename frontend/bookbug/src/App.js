@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.png';
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import Search from './Search.js';
 import Login from './Login.js';
+import Join from './Join.js';
 
 class App extends Component {
   onLogout() {
@@ -9,15 +10,18 @@ class App extends Component {
   }
 
   render() {
-    if (localStorage.getItem('token') != null) {
-      return (
-        <h2>Hello</h2>
-      );
-    } else {
-      return (
-        <Login/>
-      );
-    }
+    return (
+      <Router>
+        <div>
+          <Switch>
+            <Route exact path="/" component={Login} />
+            <Route path="/search" component={Search} />
+            <Route path = "/join" component = {Join} />
+            <Route path = "/login" component = {Login} />
+          </Switch>
+        </div>
+      </Router>
+    );
   }
 }
 

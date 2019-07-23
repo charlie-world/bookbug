@@ -83,7 +83,7 @@ public class BookService {
                 }
                 List<Book> insertedBooks = bookRepository.saveAll(books);
                 bookList = queryCacheRepository
-                        .put(targetType, queryString, page, kakaoBookModel.getMeta().isEnd(), insertedBooks);
+                        .put(targetType, queryString, page, kakaoBookModel.getMeta().getTotalCount(), kakaoBookModel.getMeta().isEnd(), insertedBooks);
                 historyService.upsert(userId, queryString);
             } catch (CustomException e) {
                 NaverBookModel naverBookModel = naverBookHttpService.search(page, queryString, targetType);
@@ -94,7 +94,7 @@ public class BookService {
                 List<Book> insertedBooks = bookRepository.saveAll(books);
                 boolean isEnd = naverBookModel.getTotal() <= naverBookModel.getStart() + naverBookModel.getDisplay();
                 bookList = queryCacheRepository
-                        .put(targetType, queryString, page, isEnd, insertedBooks);
+                        .put(targetType, queryString, page, naverBookModel.getTotal(), isEnd, insertedBooks);
             }
         } else {
             bookList = cachedBookList;

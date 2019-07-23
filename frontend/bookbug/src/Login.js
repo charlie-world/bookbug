@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Config from './config.js';
-import Join from './Join.js';
+import { Link } from 'react-router-dom';
 import 'whatwg-fetch';
+import Search from './Search.js';
+import logo from './logo.png';
 
 class Login extends Component {
 	constructor(){
 		super(...arguments);
-		this.state ={
+		this.state = {
 			requestID:'',
 			requestPW:''
 		};
@@ -20,10 +22,6 @@ class Login extends Component {
 
 		this.requestIDChange = this.requestIDChange.bind(this);
 		this.requestPWChange = this.requestPWChange.bind(this);
-	}
-
-	onJoin() {
-
 	}
 
 	onSubmit() {
@@ -43,8 +41,10 @@ class Login extends Component {
 	    .then((responseData)=> {
 			if (responseData.meta.result_code === 200) {
 				localStorage.setItem('token', responseData.data.token);
+				this.props.history.push('/search');
 			} else {
 				alert(responseData.meta.result_msg);
+				this.props.history.push('/login');
 			}
 		});
 	}
@@ -57,19 +57,24 @@ class Login extends Component {
 	}
 
 	render() {
-		return (
-			<div className="loginpanel">
-				<div className="loginwindow">
-					<ul>
-						<li className="title">Login</li>
-						<li><input type="text" name="requestID" placeholder="Id" value={this.state.requestID} onChange={this.requestIDChange}/></li>
-						<li><input type="password" name="requestPW" placeholder="Password" value={this.state.requestPW} onChange={this.requestPWChange}/></li>
-						<li><button className="loginwindowbutton" onClick={this.onSubmit.bind(this)}>로그인</button></li>
-						<li><button className="joinwindowsbutton" onClick={Join}>회원가입</button></li>
-					</ul>
+		if (localStorage.getItem('token') != null) {
+			this.props.history.push('/search');
+		} else {
+			return (
+				<div className="loginpanel">
+					<div className="loginwindow">
+					<img src={logo} alt="logo"/>
+						<ul>
+							<h2 className="title">Login</h2>
+							<h3><input type="text" name="requestID" placeholder="Id" value={this.state.requestID} onChange={this.requestIDChange}/></h3>
+							<h3><input type="password" name="requestPW" placeholder="Password" value={this.state.requestPW} onChange={this.requestPWChange}/></h3>
+							<h3><button className="loginwindowbutton" onClick={this.onSubmit.bind(this)}>로그인</button></h3>
+							<h3><Link to="/join"><button className="joinwindowsbutton">회원가입</button></Link></h3>
+						</ul>
+					</div>
 				</div>
-			</div>
-		);
+			);
+		}
 	}
 }
 

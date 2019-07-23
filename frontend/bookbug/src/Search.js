@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-function Search() {
-    return (
-        <h2>Search</h2>
-    );
+class Search extends Component {
+    // constructor(){
+	// 	super(...arguments);
+	// 	this.state = {
+    //         query:'',
+    //         target: ''
+	// 	};
+	// }
+
+    render() {
+		return (
+            // <h1>Search</h1>
+            <div>
+                <h1>Search</h1>
+            </div>
+		);
+	}
 }
 
 export default Search;
