@@ -37,7 +37,7 @@ class Login extends Component {
 	    }).then((response)=> response.json())
 		.then((responseData)=> {
 			if (responseData.meta.result_code === 200) {
-				CacheStorage.setItem('token', responseData.data.token);
+				sessionStorage.setItem('token', responseData.data.token);
 				this.props.history.push('/search');
 			} else {
 				alert(responseData.meta.result_msg);
@@ -53,7 +53,7 @@ class Login extends Component {
 	}
 
 	render() {
-		if (CacheStorage.getItem('token') != null) {
+		if (sessionStorage.getItem('token') != null) {
 			return (
 					<Redirect to="/search"/>
 			);

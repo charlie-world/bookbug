@@ -9,7 +9,7 @@ class Rank extends Component {
     };
 
     getRank() {
-        if (CacheStorage.getItem('token') === null) {
+        if (sessionStorage.getItem('token') === null) {
             this.props.history.push('/login');
         } else {
             let apiPath = `${Config.host}/api/v1/populars-keyword`;
@@ -18,7 +18,7 @@ class Rank extends Component {
                 headers:{
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
-                    'X-USER-AUTH': CacheStorage.getItem('token')
+                    'X-USER-AUTH': sessionStorage.getItem('token')
                 }
             }).then((response)=> response.json())
             .then((responseData)=> {
@@ -28,7 +28,7 @@ class Rank extends Component {
                         update: false
                     });
                 } else if (responseData.meta.result_code === 401) {
-                    CacheStorage.removeItem('token');
+                    sessionStorage.removeItem('token');
                     this.props.history.push('/');
                 } else {
                     alert(responseData.meta.result_msg);

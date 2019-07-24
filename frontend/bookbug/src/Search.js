@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Config from './config.js';
 import { Link } from 'react-router-dom';
+import querySearch from "stringquery";
 
 class Search extends Component {
     constructor() {
@@ -35,7 +36,7 @@ class Search extends Component {
                 headers:{
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
-                    'X-USER-AUTH': CacheStorage.getItem('token')
+                    'X-USER-AUTH': sessionStorage.getItem('token')
                 }
             }).then((response)=> response.json())
                 .then((responseData) => {
@@ -47,7 +48,7 @@ class Search extends Component {
                         });
                         this.props.history.push(`/search?${target}&${page}&${query}`);
                     } else if (responseData.meta.result_code === 401) {
-                        CacheStorage.removeItem('token');
+                        sessionStorage.removeItem('token');
                         this.props.history.push('/');
                     } else {
                         alert(responseData.meta.result_msg);
@@ -60,7 +61,7 @@ class Search extends Component {
                 headers:{
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
-                    'X-USER-AUTH': CacheStorage.getItem('token')
+                    'X-USER-AUTH': sessionStorage.getItem('token')
                 }
             }).then((response)=> response.json())
                 .then((responseData) => {
@@ -71,7 +72,7 @@ class Search extends Component {
                             total: responseData.data.total,
                         });
                     } else if (responseData.meta.result_code === 401) {
-                        CacheStorage.removeItem('token');
+                        sessionStorage.removeItem('token');
                         this.props.history.push('/');
                     } else {
                         alert(responseData.meta.result_msg);
@@ -180,7 +181,7 @@ class Search extends Component {
     }
 
     render() {
-        const queryString = this.props.location.search;
+        const queryString = querySearch(this.props.location.search);
         if (this.state.results === null) {
             if (queryString !== "") {
                 return this.onQuery(queryString);
