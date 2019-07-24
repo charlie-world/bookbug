@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class PopularService {
 
     @Autowired
@@ -32,7 +31,8 @@ public class PopularService {
         return popularKeywordList;
     }
 
-    public void upsert(String queryString) {
+    @Transactional
+    public Popular upsert(String queryString) {
         Optional<Popular> popularOpt = popularRepository.findByQueryString(queryString);
         Popular popular;
         if (popularOpt.isPresent()) {
@@ -45,6 +45,6 @@ public class PopularService {
         } else {
             popular = Popular.builder().count(1L).queryString(queryString).build();
         }
-        popularRepository.save(popular);
+        return popularRepository.save(popular);
     }
 }

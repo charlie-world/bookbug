@@ -47,7 +47,7 @@ public class BookService {
     @Transactional
     private List<Book> upsertBooks(List<Book> books) {
         List<Book> bookList = new ArrayList<>();
-        for (Book book: books) {
+        for (Book book : books) {
             Optional<Book> bookOpt = bookRepository.findByIsbn(book.getIsbn());
             if (!bookOpt.isPresent()) {
                 Book newBook = bookRepository.save(book);

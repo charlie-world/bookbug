@@ -29,7 +29,7 @@ public class HistoryService {
         return userHistories;
     }
 
-    public void upsert(Long userId, String queryString) {
-        historyRepository.save(History.builder().queryString(queryString).userId(userId).build());
+    public History upsert(Long userId, String queryString) {
+        return historyRepository.save(History.builder().queryString(queryString).userId(userId).build());
     }
 }
