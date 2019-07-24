@@ -7,6 +7,8 @@ Book bug is a helper of library
 
 ```
 java -jar bookbug.jar
+
+Browser 로 localhost:8080 접속
 ```
 
 ## API docs

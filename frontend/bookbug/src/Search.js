@@ -11,8 +11,7 @@ class Search extends Component {
             results: null,
             page: 1,
             total: 0,
-            isEnd: false,
-            queryString: ""
+            isEnd: false
         };
         this.queryChange = this.queryChange.bind(this);
         this.targetChange = this.targetChange.bind(this);
@@ -25,39 +24,65 @@ class Search extends Component {
 		this.setState({target: event.target.value});
     }
     
-    onQuery() {
-        let target = `target-type=${this.state.target}`;
-        let query = `query=${this.state.query}`;
-        let page = `page=${this.state.page}`;
-        let url = `${Config.host}/api/v1/books?${target}&${page}&${query}`;
-        fetch(url, {
-            method: 'GET',
-            headers:{
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'X-USER-AUTH': sessionStorage.getItem('token')
-            }
-        }).then((response)=> response.json())
-            .then((responseData) => {
-                if (responseData.meta.result_code === 200) {
-                    this.setState({
-                        results: responseData.data.books,
-                        isEnd: responseData.data.isEnd,
-                        total: responseData.data.total,
-                    });
-                    this.props.history.push(`/search?${target}&${page}&${query}`);
-                } else if (responseData.meta.result_code === 401) {
-                    sessionStorage.removeItem('token');
-                    this.props.history.push('/login');
-                } else {
-                    alert(responseData.meta.result_msg);
+    onQuery(queryString = null) {
+        if (!queryString) {
+            let target = `target-type=${this.state.target}`;
+            let query = `query=${this.state.query}`;
+            let page = `page=${this.state.page}`;
+            let url = `${Config.host}/api/v1/books?${target}&${page}&${query}`;
+            fetch(url, {
+                method: 'GET',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'X-USER-AUTH': CacheStorage.getItem('token')
                 }
-            });
+            }).then((response)=> response.json())
+                .then((responseData) => {
+                    if (responseData.meta.result_code === 200) {
+                        this.setState({
+                            results: responseData.data.books,
+                            isEnd: responseData.data.isEnd,
+                            total: responseData.data.total,
+                        });
+                        this.props.history.push(`/search?${target}&${page}&${query}`);
+                    } else if (responseData.meta.result_code === 401) {
+                        CacheStorage.removeItem('token');
+                        this.props.history.push('/');
+                    } else {
+                        alert(responseData.meta.result_msg);
+                    }
+                });
+        } else {
+            let url = `${Config.host}/api/v1/books${queryString}`;
+            fetch(url, {
+                method: 'GET',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'X-USER-AUTH': CacheStorage.getItem('token')
+                }
+            }).then((response)=> response.json())
+                .then((responseData) => {
+                    if (responseData.meta.result_code === 200) {
+                        this.setState({
+                            results: responseData.data.books,
+                            isEnd: responseData.data.isEnd,
+                            total: responseData.data.total,
+                        });
+                    } else if (responseData.meta.result_code === 401) {
+                        CacheStorage.removeItem('token');
+                        this.props.history.push('/');
+                    } else {
+                        alert(responseData.meta.result_msg);
+                    }
+                });
+        }
     }
 
     logout() {
         sessionStorage.removeItem('token');
-        this.props.history.push('/login');
+        this.props.history.push('/');
     }
 
     rank() {
@@ -155,8 +180,13 @@ class Search extends Component {
     }
 
     render() {
+        const queryString = this.props.location.search;
         if (this.state.results === null) {
-            return this.searchTab();
+            if (queryString !== "") {
+                return this.onQuery(queryString);
+            } else {
+                return this.searchTab();
+            }
         } else {
             return (
                 <div>

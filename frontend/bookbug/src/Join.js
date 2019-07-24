@@ -34,7 +34,7 @@ class Join extends Component {
 			} else {
 				alert(responseData.meta.result_msg);
 			}
-			this.props.history.push('/login');
+			this.props.history.push('/');
 		});
 	}
 

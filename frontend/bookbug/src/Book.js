@@ -23,6 +23,9 @@ class Book extends Component {
             result: responseData.data,
             update: false
           });
+        } else if (responseData.meta.result_code === 401) {
+          sessionStorage.removeItem('token');
+          this.props.history.push('/');
         } else {
           alert(responseData.meta.result_msg);
         }

@@ -10,7 +10,7 @@ class History extends Component {
 
     getHistory() {
         if (sessionStorage.getItem('token') === null) {
-            this.props.history.push('/login');
+            this.props.history.push('/');
         } else {
             let apiPath = `${Config.host}/api/v1/users/history`;
             fetch(apiPath, {
@@ -27,6 +27,9 @@ class History extends Component {
                         history: responseData.data,
                         update: false
                     });
+                } else if (responseData.meta.result_code === 401) {
+                    sessionStorage.removeItem('token');
+                    this.props.history.push('/');
                 } else {
                     alert(responseData.meta.result_msg);
                 }
