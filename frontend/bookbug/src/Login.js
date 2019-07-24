@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Config from './config.js';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import 'whatwg-fetch';
 import logo from './logo.png';
-import Join from './Join.js';
 
 class Login extends Component {
 	constructor(){
@@ -12,7 +11,6 @@ class Login extends Component {
 			requestID:'',
 			requestPW:''
 		};
-	
 		this.requestIDChange = this.requestIDChange.bind(this);
 		this.requestPWChange = this.requestPWChange.bind(this);
 	}
