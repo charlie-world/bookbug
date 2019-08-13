@@ -28,7 +28,7 @@ public class AES256CryptoService {
 
     public AES256CryptoService(String key) {
         this.key = key;
-        this.keySpec = new SecretKeySpec(new byte[KEY_LENGTH], "AES");
+        this.keySpec = new SecretKeySpec(key.getBytes(), "AES");
     }
 
     private String generateKey() {

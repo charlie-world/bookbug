@@ -8,7 +8,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KakaoBookHttpService implements HttpService {
+public class KakaoBookHttpService {
 
     private final String apiPath = "/v3/search/book";
     @Value("${spring.kakao.rest-api-key}")
@@ -27,7 +27,7 @@ public class KakaoBookHttpService implements HttpService {
         try {
             String params = String.format("?target=%s&page=%d&query=%s", targetType.getValue(), page, query);
             String uri = host + apiPath + params;
-            ResponseEntity<KakaoBookModel> response = restTemplate
+            ResponseEntity<KakaoBookModel> response = HttpService.getInstance()
                     .exchange(uri, HttpMethod.GET, makeAuthHeader(), KakaoBookModel.class);
             model = response.getBody();
         } catch (Exception e) {
