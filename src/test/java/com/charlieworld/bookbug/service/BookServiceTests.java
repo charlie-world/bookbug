@@ -50,9 +50,6 @@ public class BookServiceTests {
     @MockBean
     private KakaoBookHttpService kakaoBookHttpService;
 
-    @MockBean
-    private NaverBookHttpService naverBookHttpService;
-
     @Autowired
     private BookService bookService;
 
